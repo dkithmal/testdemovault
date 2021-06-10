@@ -1,0 +1,35 @@
+application shoud have to be start in bootstrap mode
+
+first have to enable the approle
+
+commond
+vault auth enable approle
+
+then create role
+
+commond
+vault write auth/approle/role/my-role \
+     secret_id_ttl=100m \
+     token_num_uses=10 \
+     token_ttl=200m \
+     token_max_ttl=300m \
+     secret_id_num_uses=40 \
+    policies=test-policy
+
+note- above commond test-policy shoud have permission for the your secret application path 
+
+for easy porpose i gave
+polisy as 
+path"*" {
+    capabilities = ["read"]
+
+}
+
+
+then need to create the role id and secret-id 
+
+commond for role id
+vault read auth/approle/role/my-role/role-id
+
+commond for secret id
+vault write -f auth/approle/role/my-role/secret-id
